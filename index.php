@@ -490,9 +490,143 @@ $bot->onCallbackQueryData('medi:e', function (User $bot) {
 
 $bot->onCallbackQueryData('check:out', function (User $bot) {
     $bot->sendMessage('Here is the list of items you have selected: ➡️');
+
+    $foodSum = array_sum($bot->food);
+    $houseSum = array_sum($bot->household);
+    $medicineSum = array_sum($bot->medicine);
+
+$foodMsg = "From the Food Items:\n\n";
+$houseMsg = "From the Household Items:\n\n";
+$medicineMsg = "From the Medicine Items:\n\n";
+$bot->quantity=0;
+
+    if ($foodSum == 0)
+    {
+        $foodMsg .= 'You have not selected anything';
+    }
+    else
+    {
+        if ($bot->food[0] != 0)
+        {
+            $n = $bot->food[0];
+            $foodMsg .= "Natkhat: $n\n";
+            $bot->quantity += $n;
+        }
+        if ($bot->food[1] != 0)
+        {
+            $n = $bot->food[1];
+            $foodMsg .= "Lays: $n\n";
+            $bot->quantity += $n;
+        }
+        if ($bot->food[2] != 0)
+        {
+            $n = $bot->food[2];
+            $foodMsg .= "Maggie: $n\n";
+            $bot->quantity += $n;
+        }
+        if ($bot->food[3] != 0)
+        {
+            $n = $bot->food[3];
+            $foodMsg .= "Oats: $n\n";
+            $bot->quantity += $n;
+        }
+        if ($bot->food[4] != 0)
+        {
+            $n = $bot->food[4];
+            $foodMsg .= "Pepsi: $n\n";
+            $bot->quantity += $n;
+        }
+    }
+
+    if ($houseSum == 0)
+    {
+        $houseMsg .= 'You have not selected anything';
+    }
+    else
+    {
+        if ($bot->household[0] != 0)
+        {
+            $n = $bot->household[0];
+            $houseMsg .= "Harpic: $n\n";
+            $bot->quantity += $n;
+        }
+        if ($bot->household[1] != 0)
+        {
+            $n = $bot->household[1];
+            $houseMsg .= "Vim Bar: $n\n";
+            $bot->quantity += $n;
+        }
+        if ($bot->household[2] != 0)
+        {
+            $n = $bot->household[2];
+            $houseMsg .= "Rin Bar: $n\n";
+            $bot->quantity += $n;
+        }
+        if ($bot->household[3] != 0)
+        {
+            $n = $bot->household[3];
+            $houseMsg .= "Bathing Soap: $n\n";
+            $bot->quantity += $n;
+        }
+        if ($bot->household[4] != 0)
+        {
+            $n = $bot->household[4];
+            $houseMsg .= "Surf Excel: $n\n";
+            $bot->quantity += $n;
+        }
+    }
+
+    if ($medicineSum == 0)
+    {
+        $medicineMsg .= 'You have not selected anything';
+    }
+    else
+    {
+        if ($bot->medicine[0] != 0)
+        {
+            $n = $bot->medicine[0];
+            $medicineMsg .= "Combiflam: $n\n";
+            $bot->quantity += $n;
+        }
+        if ($bot->medicine[1] != 0)
+        {
+            $n = $bot->medicine[1];
+            $medicineMsg .= "Paracetamol: $n\n";
+            $bot->quantity += $n;
+        }
+        if ($bot->medicine[2] != 0)
+        {
+            $n = $bot->medicine[2];
+            $medicineMsg .= "Betadine: $n\n";
+            $bot->quantity += $n;
+        }
+        if ($bot->medicine[3] != 0)
+        {
+            $n = $bot->medicine[3];
+            $medicineMsg .= "Whisper: $n\n";
+            $bot->quantity += $n;
+        }
+        if ($bot->medicine[4] != 0)
+        {
+            $n = $bot->medicine[4];
+            $medicineMsg .= "Vicks: $n\n";
+            $bot->quantity += $n;
+        }
+    }
+
+    $bot->sendMessage($foodMsg);
+    $bot->sendMessage($houseMsg);
+    $bot->sendMessage($medicineMsg);
+
     $bot->answerCallbackQuery([
         'text' => 'Checkout receipt generated!'
     ]);
+
+    $bot->totalPrice = $bot->quantity * 5;
+    $finalMsg = "A total of $bot->quantity items is in your cart.\n\nTotal amount payable: $bot->totalPrice Rupees.";
+    $finalMsg .= "\n\n\nWe are sending you a QR Code to pay for the same.\n\nHappy shopping!";
+
+    $bot->sendMessage($finalMsg);
 });
 
 

@@ -26,9 +26,32 @@ class User extends Nutgram {
     public $deliveryAddress;
     public $totalPrice;
     public $quantity;
+
     public $household = array(0, 0, 0, 0, 0);
+    /*
+    ** 1. Harpic
+    ** 2. Vim Bar
+    ** 3. Rin Bar
+    ** 4. Bathing Soap
+    ** 5. Surf Excel
+    */
     public $medicine = array(0, 0, 0, 0, 0);
+    /*
+    ** Now the Medicine menu, choose from:
+    ** 1. Combiflam
+    ** 2. Paracetamol
+    ** 3. Betadine
+    ** 4. Whisper
+    ** 5. Vicks
+    */
     public $food = array(0, 0, 0, 0, 0);
+    /*
+    ** 1. Natkhat
+    ** 2. Lays
+    ** 3. Maggie
+    ** 4. Oats
+    ** 5. Pepsi
+    */
 
     public function setName($name) {
         $this->name = $name;
@@ -99,6 +122,23 @@ Here are the few instructions that will help you to use the bot:
 
     $bot->sendMessage("$msg");
 }
+
+
+/*
+**  We have to store the name and delivery address as well.
+*/
+
+$bot->onText('My name is {name}', function (User $bot, string $name) {
+    $bot->sendMessage("Hi $name");
+    $bot->sendMessage("Let me store your name in my database.");
+
+    $bot->setName($name);
+    $naam = $bot->getName();
+    $bot->sendMessage("$naam is stored in my database. You can now proceed with your shopping!");
+
+    $bot->sendMessage("Here's the categories of product we have. Reply /categories to know more");
+});
+
 
 /*
 **  Main Category choosing menu
@@ -203,36 +243,52 @@ function foodMenu(User $bot)
                 callback_data: 'food:e'
                 ),
             )
+            ->addRow(
+                InlineKeyboardButton::make(
+                    'Check Out',
+                callback_data: 'check:out'
+                ),
+            )
     ]);
 }
 
 $bot->onCallbackQueryData('food:a', function (User $bot) {
+    $bot->food[0]++;
+    $n = $bot->food[0];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Natkhat'
+        'text' => "You selected $n Natkhat"
     ]);
 });
 
 $bot->onCallbackQueryData('food:b', function (User $bot) {
+    $bot->food[1]++;
+    $n = $bot->food[1];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Lays'
+        'text' => "You selected $n Lays"
     ]);
 });
 
 $bot->onCallbackQueryData('food:c', function (User $bot) {
+    $bot->food[2]++;
+    $n = $bot->food[2];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Maggie'
+        'text' => "You selected $n Maggie"
     ]);
 });
 
 $bot->onCallbackQueryData('food:d', function (User $bot) {
+    $bot->food[3]++;
+    $n = $bot->food[3];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Oats'
+        'text' => "You selected $n Oats"
     ]);
 });
 
 $bot->onCallbackQueryData('food:e', function (User $bot) {
+    $bot->food[4]++;
+    $n = $bot->food[4];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Pepsi'
+        'text' => "You selected $n Pepsi"
     ]);
 });
 
@@ -282,36 +338,52 @@ function householdMenu(User $bot)
                 callback_data: 'house:e'
                 ),
             )
+            ->addRow(
+                InlineKeyboardButton::make(
+                    'Check Out',
+                callback_data: 'check:out'
+                ),
+            )
     ]);
 }
 
 $bot->onCallbackQueryData('house:a', function (User $bot) {
+    $bot->household[0]++;
+    $n = $bot->household[0];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Harpic'
+        'text' => "You selected $n Harpic"
     ]);
 });
 
 $bot->onCallbackQueryData('house:b', function (User $bot) {
+    $bot->household[1]++;
+    $n = $bot->household[1];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Vim Bar'
+        'text' => "You selected $n Vim Bar"
     ]);
 });
 
 $bot->onCallbackQueryData('house:c', function (User $bot) {
+    $bot->household[2]++;
+    $n = $bot->household[2];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Rin Bar'
+        'text' => "You selected $n Rin Bar"
     ]);
 });
 
 $bot->onCallbackQueryData('house:d', function (User $bot) {
+    $bot->household[3]++;
+    $n = $bot->household[3];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Bathing Soap'
+        'text' => "You selected $n Bathing Soap"
     ]);
 });
 
 $bot->onCallbackQueryData('house:e', function (User $bot) {
+    $bot->household[4]++;
+    $n = $bot->household[4];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Surf Excel'
+        'text' => "You selected $n Surf Excel"
     ]);
 });
 
@@ -361,98 +433,68 @@ function medicineMenu(User $bot)
                 callback_data: 'medi:e'
                 ),
             )
+            ->addRow(
+                InlineKeyboardButton::make(
+                    'Check Out',
+                callback_data: 'check:out'
+                ),
+            )
     ]);
 }
 
 $bot->onCallbackQueryData('medi:a', function (User $bot) {
+    $bot->medicine[0]++;
+    $n = $bot->medicine[0];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Combiflam'
+        'text' => "You selected $n Combiflam"
     ]);
 });
 
 $bot->onCallbackQueryData('medi:b', function (User $bot) {
+    $bot->medicine[1]++;
+    $n = $bot->medicine[1];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Paracetamol'
+        'text' => "You selected $n Paracetamol"
     ]);
 });
 
 $bot->onCallbackQueryData('medi:c', function (User $bot) {
+    $bot->medicine[2]++;
+    $n = $bot->medicine[2];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Betadine'
+        'text' => "You selected $n Betadine"
     ]);
 });
 
 $bot->onCallbackQueryData('medi:d', function (User $bot) {
+    $bot->medicine[3]++;
+    $n = $bot->medicine[3];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Whisper'
+        'text' => "You selected $n Whisper"
     ]);
 });
 
 $bot->onCallbackQueryData('medi:e', function (User $bot) {
+    $bot->medicine[4]++;
+    $n = $bot->medicine[4];
     $bot->answerCallbackQuery([
-        'text' => 'You selected Vicks'
+        'text' => "You selected $n Vicks"
     ]);
 });
 
 
 /*
-**  
+**  Every menu is decided now.
+**  Now we have to have a function to handle the user checkout.
 */
-// $bot->onCommand('categories', function (Nutgram $bot) {
 
-//     class AskIceCreamConversation extends Conversation {
-
-//         protected ?string $step = 'askCupSize';
-    
-//         public $cupSize;
-    
-//         public function askCupSize(Nutgram $bot)
-//         {
-//             $bot->sendMessage('How big should be you ice cream cup?', [
-//                 'reply_markup' => InlineKeyboardMarkup::make()
-//                     ->addRow(InlineKeyboardButton::make('Small', callback_data: 'S'), InlineKeyboardButton::make('Medium', callback_data: 'M'))
-//                     ->addRow(InlineKeyboardButton::make('Big', callback_data: 'L'), InlineKeyboardButton::make('Super Big', callback_data: 'XL')),
-//             ]);
-//             $this->next('askFlavors');
-//         }
-    
-//         public function askFlavors(Nutgram $bot)
-//         {
-//             // if is not a callback query, ask again!
-//             if (!$bot->isCallbackQuery()) {
-//                 $this->askCupSize($bot);
-//                 return;
-//             }
-    
-//             $this->cupSize = $bot->callbackQuery()->data;
-    
-//             $bot->sendMessage('What flavors do you like?');
-//             $this->next('recap');
-//         }
-    
-//         public function recap(Nutgram $bot)
-//         {
-//             $flavors = $bot->message()->text;
-//             $bot->sendMessage("You want an $this->cupSize cup with this flavors: $flavors");
-//             $this->end();
-//         }
-//     }
-
-// });
-
-
-
-
-$bot->onText('My name is {name}', function (User $bot, string $name) {
-    $bot->sendMessage("Hi $name");
-    $bot->sendMessage("Let me store your name in my database.");
-
-    $bot->setName($name);
-    $naam = $bot->getName();
-    $bot->sendMessage("$naam is stored in my database. You can now proceed with your shopping!");
-
-    $bot->sendMessage("Here's the categories of product we have. Reply /categories to know more");
+$bot->onCallbackQueryData('check:out', function (User $bot) {
+    $bot->sendMessage('Here is the list of items you have selected: ➡️');
+    $bot->answerCallbackQuery([
+        'text' => 'Checkout receipt generated!'
+    ]);
 });
+
 
 
 /*

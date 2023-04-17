@@ -3,6 +3,8 @@
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Common\Update;
+use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Nutgram;
 
 require './vendor/autoload.php';
@@ -22,8 +24,8 @@ $config = [
 ** Defining a new class with user extensions extending the Nutgram Bot Class
 */
 class User extends Nutgram {
-    public $name;
-    public $deliveryAddress;
+    public $name = "NA";
+    public $deliveryAddress = "NA";
     public $totalPrice;
     public $quantity;
 
@@ -135,8 +137,15 @@ $bot->onText('My name is {name}', function (User $bot, string $name) {
     $bot->setName($name);
     $naam = $bot->getName();
     $bot->sendMessage("$naam is stored in my database. You can now proceed with your shopping!");
+});
 
-    $bot->sendMessage("Here's the categories of product we have. Reply /categories to know more");
+
+$bot->onText('Delivery address is {address}', function (User $bot, string $address) {
+    $bot->sendMessage("Let me store your address in my database.");
+
+    $bot->setDeliveryAddress($address);
+    $naam = $bot->getDeliveryAddress();
+    $bot->sendMessage("$naam \nis stored in my database. You can now proceed with your shopping!");
 });
 
 
@@ -306,7 +315,7 @@ $bot->onCallbackQueryData('food:e', function (User $bot) {
 
 function householdMenu(User $bot)
 {
-    $bot->sendMessage('Choose Food Item from this list:', [
+    $bot->sendMessage('Choose Household Item from this list:', [
         'reply_markup' => InlineKeyboardMarkup::make()
             ->addRow(
                 InlineKeyboardButton::make(
@@ -489,6 +498,33 @@ $bot->onCallbackQueryData('medi:e', function (User $bot) {
 */
 
 $bot->onCallbackQueryData('check:out', function (User $bot) {
+
+
+
+    if ($bot->name == "NA" && $bot->deliveryAddress == "NA")
+    {
+        $erMsg = "Please enter your Name and Delivery Address in the given format before checking out!";
+        $erMsg .= "\n\nYou can refer to /start for the format.";
+        $bot->sendMessage($erMsg);
+        return;
+    }
+    if ($bot->name == "NA")
+    {
+        $erMsg = "Please enter your Name in the given format before checking out!";
+        $erMsg .= "\n\nYou can refer to /start for the format.";
+        $bot->sendMessage($erMsg);
+        return;
+    }
+    if ($bot->deliveryAddress == "NA")
+    {
+        $erMsg = "Please enter your Delivery Address in the given format before checking out!";
+        $erMsg .= "\n\nYou can refer to /start for the format.";
+        $bot->sendMessage($erMsg);
+        return;
+    }
+
+
+
     $bot->sendMessage('Here is the list of items you have selected: ➡️');
 
     $foodSum = array_sum($bot->food);
@@ -627,6 +663,15 @@ $bot->quantity=0;
     $finalMsg .= "\n\n\nWe are sending you a QR Code to pay for the same.\n\nHappy shopping!";
 
     $bot->sendMessage($finalMsg);
+
+    $imagePath = 'image.png';
+    $imageFile = new InputFile($imagePath);
+
+    $caption = "Total amount: $bot->totalPrice \n\n";
+    $caption .= "Bill named to: $bot->name\n\n";
+    $caption .= "To be delivered on: $bot->deliveryAddress";
+
+    $bot->sendPhoto($imageFile, ['caption' => $caption]);
 });
 
 

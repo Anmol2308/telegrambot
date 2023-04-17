@@ -1,6 +1,5 @@
 {
     "require": {
-        "guzzlehttp/guzzle": "^7.5",
-        "nutgram/nutgram": "^3.17"
+        "nutgram/nutgram": "^3.18"
     }
 }

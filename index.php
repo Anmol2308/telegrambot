@@ -67,6 +67,4 @@ $bot->onMessage(function ($message) use ($bot) {
     }
 });
 
-
-
 $bot->run();
